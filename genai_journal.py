@@ -202,6 +202,7 @@ elif selected_section == "Create Video":
     if st.session_state["responses"]:
         if st.button("Create Video"):
             #  video creation
+            pass
     else:
         st.write("Answer some questions to generate the script and create the video.")
 

@@ -1,0 +1,633 @@
+[
+    [
+      {
+        "question": "How did you sleep last night?",
+        "options": ["Very well", "Well", "Poorly", "Very poorly"]
+      },
+      {
+        "question": "What did you have for breakfast?",
+        "options": ["Cereal", "Eggs", "Fruit", "Skipped"]
+      },
+      {
+        "question": "Did you exercise today?",
+        "options": ["Yes, a lot", "Yes, a little", "No"]
+      },
+      {
+        "question": "How was your mood in the morning?",
+        "options": ["Happy", "Neutral", "Sad", "Anxious"]
+      },
+      {
+        "question": "Did you go to work/school today?",
+        "options": ["Yes", "No", "Worked from home"]
+      },
+      {
+        "question": "What did you do for lunch?",
+        "options": ["Ate out", "Ate at home", "Skipped"]
+      },
+      {
+        "question": "How many cups of coffee/tea did you drink today?",
+        "options": ["None", "1-2", "3-4", "5 or more"]
+      },
+      {
+        "question": "Did you spend time with family or friends today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was the highlight of your day?",
+        "options": ["Work/School achievement", "Social event", "Personal milestone", "Other (Specify)"]
+      },
+      {
+        "question": "How are you feeling now?",
+        "options": ["Happy", "Tired", "Stressed", "Relaxed"]
+      }
+    ],
+    [
+      {
+        "question": "What time did you wake up today?",
+        "options": ["Before 6 AM", "6-8 AM", "8-10 AM", "After 10 AM"]
+      },
+      {
+        "question": "Did you have any meetings or appointments today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was the weather like today?",
+        "options": ["Sunny", "Cloudy", "Rainy", "Snowy"]
+      },
+      {
+        "question": "How productive were you today?",
+        "options": ["Very productive", "Moderately productive", "Not very productive", "Not at all productive"]
+      },
+      {
+        "question": "Did you read or watch the news today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What did you have for dinner?",
+        "options": ["Home-cooked meal", "Takeout", "Skipped"]
+      },
+      {
+        "question": "Did you do any shopping today?",
+        "options": ["Yes, in-store", "Yes, online", "No"]
+      },
+      {
+        "question": "Did you learn something new today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you encounter any challenges today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What are you grateful for today?",
+        "options": ["Family", "Friends", "Health", "Work/School"]
+      }
+    ],
+    [
+      {
+        "question": "What time did you go to bed last night?",
+        "options": ["Before 10 PM", "10 PM - 12 AM", "After 12 AM"]
+      },
+      {
+        "question": "Did you have any dreams last night?",
+        "options": ["Yes, I remember them", "Yes, but I don't remember", "No"]
+      },
+      {
+        "question": "What was your main activity in the morning?",
+        "options": ["Working", "Studying", "Relaxing", "Running errands"]
+      },
+      {
+        "question": "Did you have any important conversations today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you commute today?",
+        "options": ["By car", "By public transport", "Walking", "Stayed home"]
+      },
+      {
+        "question": "What was your snack of the day?",
+        "options": ["Fruit", "Chips", "Nuts", "None"]
+      },
+      {
+        "question": "Did you spend time on a hobby today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you help someone today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How much water did you drink today?",
+        "options": ["Less than 1 liter", "1-2 liters", "More than 2 liters"]
+      },
+      {
+        "question": "What is one thing you wish you did differently today?",
+        "options": ["Worked more", "Relaxed more", "Spent more time with loved ones", "Other (Specify)"]
+      }
+    ],
+    [
+      {
+        "question": "How many hours did you sleep last night?",
+        "options": ["Less than 5", "5-7", "7-9", "More than 9"]
+      },
+      {
+        "question": "What was the first thing you did after waking up?",
+        "options": ["Checked phone", "Brushed teeth", "Ate breakfast", "Other (Specify)"]
+      },
+      {
+        "question": "Did you plan your day today?",
+        "options": ["Yes, everything", "Yes, partially", "No"]
+      },
+      {
+        "question": "What type of music did you listen to today?",
+        "options": ["Pop", "Rock", "Classical", "None"]
+      },
+      {
+        "question": "Did you do any house chores today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How long did you spend on social media today?",
+        "options": ["Less than 1 hour", "1-2 hours", "More than 2 hours", "Not at all"]
+      },
+      {
+        "question": "Did you encounter any technical issues today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you meditate or practice mindfulness today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What book are you currently reading?",
+        "options": ["Specify title", "Not reading any book"]
+      },
+      {
+        "question": "What are you looking forward to tomorrow?",
+        "options": ["Work/School", "Social event", "Relaxing", "Other (Specify)"]
+      }
+    ],
+    [
+      {
+        "question": "Did you snooze your alarm today?",
+        "options": ["Yes", "No", "No alarm set"]
+      },
+      {
+        "question": "What did you wear today?",
+        "options": ["Casual", "Formal", "Athletic", "Pajamas"]
+      },
+      {
+        "question": "Did you cook any meals today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How was your afternoon?",
+        "options": ["Productive", "Relaxing", "Stressful", "Boring"]
+      },
+      {
+        "question": "Did you do any creative work today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you experience any technical issues today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you watch any movies or shows today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you take any naps today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How many steps did you take today?",
+        "options": ["Less than 5,000", "5,000-10,000", "More than 10,000"]
+      },
+      {
+        "question": "Did you reflect on your day before going to bed?",
+        "options": ["Yes", "No"]
+      }
+    ],
+    [
+      {
+        "question": "How many times did you wake up during the night?",
+        "options": ["None", "Once", "Multiple times"]
+      },
+      {
+        "question": "What was your morning beverage?",
+        "options": ["Coffee", "Tea", "Juice", "Water"]
+      },
+      {
+        "question": "Did you do any physical exercise today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you feel during the afternoon?",
+        "options": ["Energetic", "Sleepy", "Neutral", "Tired"]
+      },
+      {
+        "question": "Did you spend time outdoors today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you encounter any surprises today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you have any video calls today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was your dessert today?",
+        "options": ["Ice cream", "Cake", "Fruit", "None"]
+      },
+      {
+        "question": "Did you clean or organize anything today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you set any goals for tomorrow?",
+        "options": ["Yes", "No"]
+      }
+    ],
+    [
+      {
+        "question": "Did you have any late-night snacks?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was the most interesting thing you read or heard today?",
+        "options": ["News article", "Book excerpt", "Conversation", "Other (Specify)"]
+      },
+      {
+        "question": "Did you practice any self-care today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you feel in the evening?",
+        "options": ["Relaxed", "Stressed", "Happy", "Sad"]
+      },
+      {
+        "question": "Did you cook a new recipe today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you complete all your tasks today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you visit any new places today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you spend time with pets today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How much screen time did you have today?",
+        "options": ["Less than 2 hours", "2-4 hours", "More than 4 hours"]
+      },
+      {
+        "question": "What was your main form of transportation today?",
+        "options": ["Walking", "Driving", "Public transit", "Other (Specify)"]
+      }
+    ],
+    [
+      {
+        "question": "Did you wake up before your alarm today?",
+        "options": ["Yes", "No", "No alarm set"]
+      },
+      {
+        "question": "How did you spend your morning?",
+        "options": ["Working", "Studying", "Relaxing", "Exercising"]
+      },
+      {
+        "question": "Did you have any meetings or classes today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was your main activity in the afternoon?",
+        "options": ["Working", "Studying", "Relaxing", "Running errands"]
+      },
+      {
+        "question": "Did you listen to any podcasts today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you have any physical activity today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you take any photos today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you feel about your diet today?",
+        "options": ["Healthy", "Unhealthy", "Mixed"]
+      },
+      {
+        "question": "Did you receive any mail or packages today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How do you plan to unwind tonight?",
+        "options": ["Watching TV", "Reading", "Meditating", "Other (Specify)"]
+      }
+    ],
+    [
+      {
+        "question": "Did you meditate today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you feel after waking up today?",
+        "options": ["Refreshed", "Tired", "Neutral", "Sleepy"]
+      },
+      {
+        "question": "What did you do during your lunch break?",
+        "options": ["Ate lunch", "Worked", "Relaxed", "Ran errands"]
+      },
+      {
+        "question": "Did you listen to any music today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you complete any important tasks today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How long did you spend outside today?",
+        "options": ["Less than 30 minutes", "30 minutes to 1 hour", "More than 1 hour", "Did not go outside"]
+      },
+      {
+        "question": "Did you watch any educational videos today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you feel stressed at any point today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you spend your evening?",
+        "options": ["Working", "Studying", "Relaxing", "Other (Specify)"]
+      },
+      {
+        "question": "What are you most proud of today?",
+        "options": ["Work/School achievement", "Personal accomplishment", "Helping others", "Other (Specify)"]
+      }
+    ],
+    [
+      {
+        "question": "Did you follow your routine today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was your breakfast today?",
+        "options": ["Cereal", "Toast", "Eggs", "Skipped"]
+      },
+      {
+        "question": "Did you take any breaks today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you feel after lunch?",
+        "options": ["Energetic", "Sleepy", "Neutral", "Tired"]
+      },
+      {
+        "question": "Did you learn something new today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How was the traffic today?",
+        "options": ["Light", "Moderate", "Heavy", "Not applicable"]
+      },
+      {
+        "question": "Did you have any meaningful conversations today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How much water did you drink today?",
+        "options": ["Less than 1 liter", "1-2 liters", "More than 2 liters"]
+      },
+      {
+        "question": "Did you practice any hobbies today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was the best part of your day?",
+        "options": ["Morning", "Afternoon", "Evening", "Night"]
+      }
+    ],
+    [
+      {
+        "question": "How was your sleep quality last night?",
+        "options": ["Excellent", "Good", "Fair", "Poor"]
+      },
+      {
+        "question": "Did you have any morning meetings?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What did you have for lunch?",
+        "options": ["Salad", "Sandwich", "Pasta", "Skipped"]
+      },
+      {
+        "question": "Did you have any afternoon snacks?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you work on any projects today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How was the weather today?",
+        "options": ["Sunny", "Cloudy", "Rainy", "Snowy"]
+      },
+      {
+        "question": "Did you have any video calls today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you relax today?",
+        "options": ["Watching TV", "Reading", "Exercising", "Other (Specify)"]
+      },
+      {
+        "question": "Did you spend time with family or friends today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was the most challenging part of your day?",
+        "options": ["Work", "School", "Personal", "Other (Specify)"]
+      }
+    ],
+    [
+      {
+        "question": "Did you have a productive morning?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What did you do after waking up?",
+        "options": ["Checked phone", "Brushed teeth", "Ate breakfast", "Other (Specify)"]
+      },
+      {
+        "question": "Did you have any deadlines today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you eat any fast food today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you read any books today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you spend your free time today?",
+        "options": ["Exercising", "Watching TV", "Reading", "Other (Specify)"]
+      },
+      {
+        "question": "Did you do any shopping today?",
+        "options": ["Yes, in-store", "Yes, online", "No"]
+      },
+      {
+        "question": "Did you talk to any family members today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you do any physical activity today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How do you feel about today overall?",
+        "options": ["Great", "Good", "Okay", "Bad"]
+      }
+    ],
+    [
+      {
+        "question": "Did you sleep well last night?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was your first activity today?",
+        "options": ["Working", "Studying", "Relaxing", "Exercising"]
+      },
+      {
+        "question": "Did you meet any friends today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What did you have for dinner?",
+        "options": ["Home-cooked", "Takeout", "Skipped"]
+      },
+      {
+        "question": "Did you watch any shows or movies today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How much time did you spend on your hobbies today?",
+        "options": ["Less than 1 hour", "1-2 hours", "More than 2 hours"]
+      },
+      {
+        "question": "Did you experience any stress today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you meditate or practice mindfulness today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you complete any tasks today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How are you feeling right now?",
+        "options": ["Happy", "Tired", "Stressed", "Relaxed"]
+      }
+    ],
+    [
+      {
+        "question": "Did you wake up feeling rested today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What did you have for breakfast?",
+        "options": ["Cereal", "Toast", "Eggs", "Skipped"]
+      },
+      {
+        "question": "Did you work from home today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you have any online meetings today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What did you do during your lunch break?",
+        "options": ["Ate lunch", "Worked", "Relaxed", "Ran errands"]
+      },
+      {
+        "question": "Did you go for a walk today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you read any news articles today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How did you spend your evening?",
+        "options": ["Working", "Studying", "Relaxing", "Other (Specify)"]
+      },
+      {
+        "question": "Did you do any physical activity today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "What was the most memorable part of your day?",
+        "options": ["Work/School achievement", "Social event", "Personal milestone", "Other (Specify)"]
+      }
+    ],
+    [
+      {
+        "question": "Did you wake up before your alarm today?",
+        "options": ["Yes", "No", "No alarm set"]
+      },
+      {
+        "question": "What did you wear today?",
+        "options": ["Casual", "Formal", "Athletic", "Pajamas"]
+      },
+      {
+        "question": "Did you cook any meals today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How was your afternoon?",
+        "options": ["Productive", "Relaxing", "Stressful", "Boring"]
+      },
+      {
+        "question": "Did you do any creative work today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you experience any technical issues today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you watch any movies or shows today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "Did you take any naps today?",
+        "options": ["Yes", "No"]
+      },
+      {
+        "question": "How many steps did you take today?",
+        "options": ["Less than 5,000", "5,000-10,000", "More than 10,000"]
+      },
+      {
+        "question": "Did you reflect on your day before going to bed?",
+        "options": ["Yes", "No"]
+      }
+    ]
+  ]
+  

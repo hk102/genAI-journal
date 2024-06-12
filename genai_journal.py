@@ -6,6 +6,8 @@ from gtts import gTTS
 import io
 import base64
 import random
+import matplotlib.pyplot as plt
+import pandas as pd
 
 client = Groq(
     api_key="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",
@@ -67,6 +69,11 @@ def text_to_audio(script):
     tts = gTTS(text=script, lang='en', slow=False)
     tts.save("day1.mp3")
 
+
+
+
+
+
 # Initialize session state
 if "responses" not in st.session_state:
     st.session_state["responses"] = []
@@ -77,7 +84,7 @@ if "current_question" not in st.session_state:
 st.sidebar.title("GenAI Journal")
 
 # Section selection
-selected_section = st.sidebar.radio("Select a Section", ["Question - Answering", "Script generation", "Convert Script to Audio", "Create Video"])
+selected_section = st.sidebar.radio("Select a Section", ["Intro","Question - Answering", "Script generation", "Convert Script to Audio", "Create Video", "Report"])
 
 # Initialize the session state for the button label
 if "script_button_label" not in st.session_state:
@@ -88,10 +95,30 @@ if "generated_script" not in st.session_state:
     st.session_state.generated_script = ""
 
 
+# Section 1: Intro
+if selected_section == "Intro":
+    st.sidebar.header("1. Intro")
+
+    
+    st.header("Welcome to the GenAI Journal!")
+    st.write("""
+    * Revolutionize your journaling experience with cutting-edge AI technology
+ * Engage in daily conversations with a thoughtful AI assistant about your day
+* Receive a personalized multimedia journal entry in video format, complete with audio and visuals
+* Gain valuable insights into your productivity levels and track your progress over time
+* Discover tools and guidance to help you unlock your ikigai (life's purpose)
+* Option for personalized mentorship to stay motivated and achieve your goals
+    """)
+    if st.button("Get Started"):
+        selected_section = "Question - Answering"
+
+        
+    
+
 
 # Section 1: Question - Answering
-if selected_section == "Question - Answering":
-    st.sidebar.header("1. Question - Answering")
+elif selected_section == "Question - Answering":
+    st.sidebar.header("2. Question - Answering")
 
     # Display current question
     def display_question(question_index):
@@ -159,7 +186,7 @@ if selected_section == "Question - Answering":
 
 # Section 2: Script generation from previously answered questions
 elif selected_section == "Script generation":
-    st.sidebar.header("2. Script generation from previously answered questions")
+    st.sidebar.header("4. Script generation from previously answered questions")
 
     if st.button(st.session_state.script_button_label):
 
@@ -181,7 +208,7 @@ elif selected_section == "Script generation":
 
 # Section 3: Convert Script to Audio
 elif selected_section == "Convert Script to Audio":
-    st.sidebar.header("3. Convert Script to Audio")
+    st.sidebar.header("5. Convert Script to Audio")
 
     if st.session_state["responses"] and st.session_state.generated_script :
         if st.button("Convert Script to Audio"):
@@ -192,12 +219,81 @@ elif selected_section == "Convert Script to Audio":
 
 # Section 4: Create Video from Audio & lip sync api
 elif selected_section == "Create Video":
-    st.sidebar.header("4. Create Video from Audio & lip sync api")
+    st.sidebar.header("6. Create Video from Audio & lip sync api")
 
     if st.session_state["responses"]:
         if st.button("Create Video"):
             #  video creation
             pass
+    else:
+        st.write("Answer some questions to generate the script and create the video.")
+
+# Section 4: Create Report
+elif selected_section == "Report":
+    st.sidebar.header("7. Create Report")
+
+    if st.session_state["responses"]:
+        if st.button("Create Report"):
+            def calculate_ikigai_score(passion, mission, profession, vocation):
+                return passion + mission + profession + vocation
+
+            def display_ikigai_score(score):
+                st.subheader(f"Your Ikigai Score: {score}")
+                
+                # Create a data frame for the pie chart
+                data = pd.DataFrame({'Category': ['Passion', 'Mission', 'Profession', 'Vocation'],
+                                    'Score': [passion, mission, profession, vocation]})
+                
+                # Create the pie chart
+                fig, ax = plt.subplots()
+                ax.pie(data['Score'], labels=data['Category'], autopct='%1.1f%%')
+                ax.axis('equal')  # Ensure the pie chart is circular
+                
+                # Display the pie chart in Streamlit
+                st.pyplot(fig)
+
+            # Streamlit app
+            st.title("Ikigai Scoring")
+
+            # Get user inputs
+            passion = st.slider("Passion", 0, 10, 7)
+            mission = st.slider("Mission", 0, 10, 4)
+            profession = st.slider("Profession", 0, 10, 6)
+            vocation = st.slider("Vocation", 0, 10, 8)
+
+            # Calculate Ikigai score
+            ikigai_score = calculate_ikigai_score(passion, mission, profession, vocation)
+
+            # Display Ikigai score and pie chart
+            display_ikigai_score(ikigai_score)
+
+            with st.expander("Actionable Steps for Tomorrow:"):
+                st.write('''
+1. Morning Routine:
+
+    * Continue with meditation and perhaps add a short exercise session.
+
+2. Work:
+
+    * Set clear goals for the day and prioritize tasks to improve productivity.
+    * Schedule short breaks to prevent burnout and maintain focus.
+
+3. Breaks:
+
+    * During lunch, try to engage in a relaxing activity, like listening to music or reading a book you enjoy.
+
+4. After Work:
+
+    * Spend quality time with family and engage in meaningful conversations.
+    * Reflect on your day and plan for tomorrow to stay organized and motivated.
+
+5. Personal Growth:
+
+    * Allocate time for a new hobby or learning activity that aligns with your passion and profession.
+
+    ''')
+
+
     else:
         st.write("Answer some questions to generate the script and create the video.")
 

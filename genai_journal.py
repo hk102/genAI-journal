@@ -5,26 +5,21 @@ from groq import Groq
 from gtts import gTTS
 import io
 import base64
+import random
 
 client = Groq(
     api_key="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",
 )
 
-# Sample questions and options
-questions = [
-    {"question": "How was your day?", "options": ["Great", "Good", "Okay", "Bad", "Terrible"]},
-    {"question": "How productive were you today?", "options": ["Very Productive", "Productive", "Neutral", "Unproductive", "Very Unproductive"]},
-    {"question": "Did you exercise today?", "options": ["Yes", "No"]},
-    {"question": "How was your mood throughout the day?", "options": ["Happy", "Content", "Neutral", "Sad", "Angry"]},
-    {"question": "Did you spend time with family or friends?", "options": ["Yes", "No"]},
-    {"question": "How much water did you drink today?", "options": ["More than 2L", "1-2L", "Less than 1L"]},
-    {"question": "How was your sleep last night?", "options": ["Excellent", "Good", "Fair", "Poor", "Terrible"]},
-    {"question": "Did you learn something new today?", "options": ["Yes", "No"]},
-    {"question": "How stressed did you feel today?", "options": ["Not at all", "A little", "Moderately", "Very", "Extremely"]},
-    {"question": "Did you have any meals outside?", "options": ["Yes", "No"]},
-    {"question": "How was the weather today?", "options": ["Sunny", "Cloudy", "Rainy", "Snowy", "Stormy"]},
-    {"question": "Did you enjoy any hobbies or leisure activities?", "options": ["Yes", "No"]},
-]
+with open("qna_bank.json","r") as file:
+    question_bank = json.load(file)
+
+# Initialize session state for questions
+if "questions" not in st.session_state:
+    q_index = random.randint(0, len(question_bank) - 1)
+    st.session_state.questions = question_bank[q_index]
+
+questions = st.session_state.questions
 
 # Function to simulate data storage
 def store_responses(question_index, user_response, free_text):

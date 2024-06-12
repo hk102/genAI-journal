@@ -1,2 +1,4 @@
 groq
 gtts
+matplotlib
+pandas

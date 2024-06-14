@@ -2,3 +2,4 @@ groq
 gtts
 matplotlib
 pandas
+openai

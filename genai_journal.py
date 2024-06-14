@@ -16,6 +16,7 @@ from openai import OpenAI, AzureOpenAI
 #     api_key=st.secrets["GROQ_KEY"],
 # )
 
+
 client = OpenAI(api_key = st.secrets["OPEANAI_KEY"])
 
 with open("qna_bank.json","r") as file:
@@ -110,9 +111,55 @@ def genai_result(prompt):
             )
     return response.choices[0].message.content
 
+def calculate_ikigai_score(passion, mission, profession, vocation):
+                return passion + mission + profession + vocation
 
+def display_ikigai_score(score):
+    st.subheader(f"Your Ikigai Score: {score}")
 
+    passion = st.session_state["report_data"].get("passion")
+    mission = st.session_state["report_data"].get("mission")
+    profession = st.session_state["report_data"].get("profession")
+    vocation = st.session_state["report_data"].get("vocation")
+    
+    # Create a data frame for the pie chart
+    data = pd.DataFrame({'Category': ['Passion', 'Mission', 'Profession', 'Vocation'],
+                        'Score': [passion, mission, profession, vocation]})
+    
+    # Create the pie chart
+    fig, ax = plt.subplots()
+    ax.pie(data['Score'], labels=data['Category'], autopct='%1.1f%%')
+    ax.axis('equal')  # Ensure the pie chart is circular
+    
+    # Display the pie chart in Streamlit
+    st.pyplot(fig)
 
+# Function to display the report
+def display_report():
+    ikigai_score = st.session_state["report_data"].get("ikigai_score")
+    passion = st.session_state["report_data"].get("passion")
+    mission = st.session_state["report_data"].get("mission")
+    profession = st.session_state["report_data"].get("profession")
+    vocation = st.session_state["report_data"].get("vocation")
+    actionable_steps_for_tomorrow = st.session_state["actionable_steps_for_tomorrow"]
+
+    st.title("Ikigai Scoring")
+
+    # Display Passion, Mission, Profession, and Vocation scores
+    # Get user inputs
+    passion = st.slider("Passion", 0, 10, int(passion))
+    mission = st.slider("Mission", 0, 10, int(mission))
+    profession = st.slider("Profession", 0, 10, int(profession))
+    vocation = st.slider("Vocation", 0, 10, int(vocation))
+    
+    # Display Ikigai score and pie chart if available
+    if ikigai_score is not None:
+        display_ikigai_score(ikigai_score)
+    
+    # Display actionable steps if available
+    if actionable_steps_for_tomorrow:
+        with st.expander("Actionable Steps for Tomorrow:"):
+            st.write(actionable_steps_for_tomorrow)
 
 
 # Initialize session state
@@ -134,6 +181,16 @@ if "script_button_label" not in st.session_state:
 # Initialize the session state for the generated script
 if "generated_script" not in st.session_state:
     st.session_state.generated_script = ""
+
+# Initialize session state variables if they don't exist
+if "report_generated" not in st.session_state:
+    st.session_state["report_generated"] = False
+if "report_data" not in st.session_state:
+    st.session_state["report_data"] = {}
+
+if "actionable_steps_for_tomorrow" not in st.session_state:
+    st.session_state["actionable_steps_for_tomorrow"] = ""
+
 
 
 # Section 1: Intro
@@ -241,12 +298,12 @@ elif selected_section == "Script generation":
                 qna_pair.append(temp)
             
             st.subheader("Generated Script:")
-            script = generate_script(qna_pair)
-            st.write(script)
-            st.session_state.generated_script = script
+            st.session_state.generated_script = generate_script(qna_pair)
+            # st.write(st.session_state.generated_script)
             st.session_state.script_button_label = "Re-generate Script"
         else:
             st.write("Answer some questions to generate the script.")
+    st.write(st.session_state.generated_script)
 
 # Section 3: Convert Script to Audio
 elif selected_section == "Convert Script to Audio":
@@ -305,107 +362,100 @@ elif selected_section == "Report":
 
         json_string = json.dumps(qna_pair)
 
-    if st.session_state["responses"]:
-        if st.button("Create Report"):
-            def calculate_ikigai_score(passion, mission, profession, vocation):
-                return passion + mission + profession + vocation
+    # Check if the report is already generated
+        if st.session_state["report_generated"]:
+            display_report()
+        else:
+            if st.session_state["responses"] :
+                create_report_button = st.button("Create Report", disabled=st.session_state["report_generated"])
+                if create_report_button:
+                    # Your logic to generate the report
+                    qna = json_string
+                    prompt = """
+        Below are the qna collected from user for his daily activity. 
 
-            def display_ikigai_score(score):
-                st.subheader(f"Your Ikigai Score: {score}")
+        QnA:
+
+        %s
+
+        ---------------------------------------------------------------
+
+        Want results in below json form. just need overall score not for each individual question. And share only json form result nothing else in result. All score is out of 10.
+        
+
+        {
+        'Passion' : <passion score>,
+        'Mission' : <mission score>,
+        'Profession' : <profession score>,
+        'Vocation': <vocation score>
+        }
+
+
+        """ %(qna)
+
+                    # Genai Result
+                    report_result = genai_result(prompt)
+                    prompt = f""" Please give only json result only from below text \n\n {report_result}"""
+                    report_result = json.loads(genai_result(prompt))
+
+                    # Get user inputs
+                    passion = int(report_result["Passion"])
+                    mission = int(report_result["Mission"])
+                    profession = int(report_result["Profession"])
+                    vocation = int(report_result["Vocation"])
+
+                    # Calculate Ikigai score
+                    ikigai_score = calculate_ikigai_score(passion, mission, profession, vocation)
+
+                    # After generating the report, store the data in st.session_state
+                    st.session_state["report_data"] = {
+                        "ikigai_score": ikigai_score,
+                        "passion": passion,
+                        "mission": mission,
+                        "profession": profession,
+                        "vocation": vocation,
+                    }
+
+                    qna = json_string
+                    tomorrow_prompt = f"""
+    Below are the qna collected from user for his daily activity. 
+
+    QnA:
+
+    {qna}
+
+    ---------------------------------------------
+
+
+    Please I am trying to achieve ikigai, so please help provide a way what can I do better tomorrow from my today's routine. Instead of giving generlize answer give some specific & personalize answer. I need few points 4-5 catagories, : 
+
+    Give me only results in some catagories without adding any extra text.
+
+    output formate:
+
+
+    1. catagory1:
+    - <suggestion>
+    - <suggestion>
+    .
+    .
+
+    2. catagory2:
+    .
+    .
+    .
+    .
+    .
+
+
+    """
+                    actionable_steps_for_tomorrow = genai_result(tomorrow_prompt)
+
+                    # After generating the report, store the data in st.session_state
+                    st.session_state["actionable_steps_for_tomorrow"]= actionable_steps_for_tomorrow
                 
-                # Create a data frame for the pie chart
-                data = pd.DataFrame({'Category': ['Passion', 'Mission', 'Profession', 'Vocation'],
-                                    'Score': [passion, mission, profession, vocation]})
-                
-                # Create the pie chart
-                fig, ax = plt.subplots()
-                ax.pie(data['Score'], labels=data['Category'], autopct='%1.1f%%')
-                ax.axis('equal')  # Ensure the pie chart is circular
-                
-                # Display the pie chart in Streamlit
-                st.pyplot(fig)
-
-            # Streamlit app
-            st.title("Ikigai Scoring")
-
-            # Prompt for Report Score
-            qna = json_string
-            prompt = """
-Below are the qna collected from user for his daily activity. 
-
-QnA:
-
-%s
-
----------------------------------------------------------------
-
-Want results in below json form. just need overall score not for each individual question. And share only json form result nothing else in result. All score is out of 10.
- 
-
-{
-'Passion' : <passion score>,
-'Mission' : <mission score>,
-'Profession' : <profession score>,
-'Vocation': <vocation score>
-}
-
-
-""" %(qna)
-
-            # Genai Result
-            report_result = genai_result(prompt)
-            prompt = f""" Please give only json result only from below text \n\n {report_result}"""
-            report_result = json.loads(genai_result(prompt))
-
-            # Get user inputs
-            passion = st.slider("Passion", 0, 10, int(report_result["Passion"]))
-            mission = st.slider("Mission", 0, 10, int(report_result["Mission"]))
-            profession = st.slider("Profession", 0, 10, int(report_result["Profession"]))
-            vocation = st.slider("Vocation", 0, 10, int(report_result["Vocation"]))
-
-            # Calculate Ikigai score
-            ikigai_score = calculate_ikigai_score(passion, mission, profession, vocation)
-
-            # Display Ikigai score and pie chart
-            display_ikigai_score(ikigai_score)
-
-            with st.expander("Actionable Steps for Tomorrow:"):
-                qna = json_string
-                tomorrow_prompt = f"""
-Below are the qna collected from user for his daily activity. 
-
-QnA:
-
-{qna}
-
----------------------------------------------
-
-
-Please I am trying to achieve ikigai, so please help provide a way what can I do better tomorrow from my today's routine. Instead of giving generlize answer give some specific & personalize answer. I need few points 4-5 catagories, : 
-
-Give me only results in some catagories without adding any extra text.
-
-output formate:
-
-
-1. catagory1:
-  - <suggestion>
-  - <suggestion>
-  .
-  .
-
-2. catagory2:
-.
-.
-.
-.
-.
-
-
-"""
-                actionable_steps_for_tomorrow = genai_result(tomorrow_prompt)
-                st.write(actionable_steps_for_tomorrow)
-
+                    st.session_state["report_generated"] = True
+                    display_report()
 
     else:
         st.write("Answer some questions to generate the script and create the video.")

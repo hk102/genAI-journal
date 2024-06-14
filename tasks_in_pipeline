@@ -5,7 +5,7 @@ Tasks in pipeline:
 3. Audio Mimicry: Users can select pre-existing voices or mimic their own voice for audio output.
 4. Comparative Reports: Users can compare their data across days, weeks, or months.
 5. User Input Integration: Users can input their raw journal entries and calendar data.
-..
+6. Chat with your self: Storeto all data with some metadata in vector db, so user can ask any kind of questions about their past. 
 ..
 ..
 ..

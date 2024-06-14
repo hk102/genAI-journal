@@ -1,0 +1,14 @@
+Tasks in pipeline:
+
+1. Personalized Question Generation: Generate questions based on the user's past data and their interests (e.g., biographies of notable individuals like Sam Altman). Currently synthesized dataset created with GPT-3.5-Turbo, 
+2. Video Editing with Lica: Users can select or create custom avatars and generate videos using Lica APIs.
+3. Audio Mimicry: Users can select pre-existing voices or mimic their own voice for audio output.
+4. Comparative Reports: Users can compare their data across days, weeks, or months.
+5. User Input Integration: Users can input their raw journal entries and calendar data.
+..
+..
+..
+..
+..
+
+

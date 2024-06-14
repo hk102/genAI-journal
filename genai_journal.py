@@ -217,7 +217,7 @@ elif selected_section == "Question - Answering":
             #                     )
             if st.button("Submit"):
                 st.session_state["current_question"] += 1
-                st.text(json_string)
+                # st.text(json_string)
 
     # Display current question
     if st.session_state["current_question"] < len(questions):

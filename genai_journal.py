@@ -17,7 +17,6 @@ from openai import OpenAI, AzureOpenAI
 # )
 
 
-
 client = OpenAI(api_key = st.secrets["OPEANAI_KEY"])
 
 with open("qna_bank.json","r") as file:
@@ -223,7 +222,6 @@ if selected_section == "Intro":
 * Gain valuable insights into your productivity levels and track your progress over time
 * Discover tools and guidance to help you unlock your ikigai (life's purpose)
 * Option for personalized mentorship to stay motivated and achieve your goals
-* #75dayshardchallange video can be made with few clicks. 
     """)
     if st.button("Get Started"):
         navigate_to_section("Question - Answering")
@@ -238,6 +236,9 @@ elif selected_section == "Question - Answering":
     # Display current question
     def display_question(question_index):
         question = questions[question_index]
+        # Display progress bar
+        progress = st.progress((question_index + 1) / len(questions))
+
         st.subheader(question["question"])
 
         # Check if there's already a stored response for this question index

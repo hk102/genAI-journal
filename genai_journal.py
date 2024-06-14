@@ -8,10 +8,15 @@ import base64
 import random
 import matplotlib.pyplot as plt
 import pandas as pd
+from openai import OpenAI, AzureOpenAI
 
-client = Groq(
-    api_key="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",
-)
+
+
+# client = Groq(
+#     api_key=st.secrets["GROQ_KEY"],
+# )
+
+client = OpenAI(api_key = st.secrets["OPEANAI_KEY"])
 
 with open("qna_bank.json","r") as file:
     question_bank = json.load(file)
@@ -41,25 +46,47 @@ def store_responses(question_index, user_response, free_text):
 # Function to generate script
 def generate_script(qna_pairs):
     qna_pairs_string = json.dumps(qna_pairs)
-    query = f"""
-    below are the few details which bot collected from user's that day's activity, so please create good 30-60 seconds script , it should only contains text which user can directly read & speak. Or with bot can directly convert from text to speech. Don't add anything except script in output. User is going to do voice over with this, so use I instead of You.
+    query = """
+    below are the few details for user's that day's activity, so please create it super creative & uniqe 30-60 seconds script , it should only contains text which user can directly read & speak. Or with bot can directly convert from text to speech. Don't add anything except script in output. User is going to do voice over with this, so use I instead of You.
 
-    {qna_pairs_string}
+    QnA:
 
-    """
+    %s
 
-    chat_completion = client.chat.completions.create(
-                                                    messages=[
-                                                        {
-                                                            "role": "user",
-                                                            "content": query,
-                                                        }
-                                                    ],
-                                                    model="llama3-8b-8192",
-                                                )
+    output formate:
 
-    script = chat_completion.choices[0].message.content
-    script = script.split('"')[1]
+    {
+        "script" : <script>
+    }
+
+
+    """ % (qna_pairs_string)
+
+    # chat_completion = client.chat.completions.create(
+    #                                                 messages=[
+    #                                                     {
+    #                                                         "role": "user",
+    #                                                         "content": query,
+    #                                                     }
+    #                                                 ],
+    #                                                 model="llama3-8b-8192",
+    #                                             )
+
+    # script = chat_completion.choices[0].message.content
+    # script = script.split('"')[1]
+
+    
+    response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": query},
+                
+            ]
+            )
+    script =  json.loads(response.choices[0].message.content)
+    script = script["script"]
     
     return script
 
@@ -68,6 +95,20 @@ def text_to_audio(script):
     # Simulate text-to-audio conversion
     tts = gTTS(text=script, lang='en', slow=False)
     tts.save("day1.mp3")
+
+
+def genai_result(prompt):
+
+    response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                
+            ]
+            )
+    return response.choices[0].message.content
 
 
 
@@ -176,6 +217,7 @@ elif selected_section == "Question - Answering":
             #                     )
             if st.button("Submit"):
                 st.session_state["current_question"] += 1
+                st.text(json_string)
 
     # Display current question
     if st.session_state["current_question"] < len(questions):
@@ -222,15 +264,46 @@ elif selected_section == "Create Video":
     st.sidebar.header("6. Create Video from Audio & lip sync api")
 
     if st.session_state["responses"]:
-        if st.button("Create Video"):
-            #  video creation
+        # if st.button("Create Video"):
+        #     #  video creation
+        #     pass
+        # Define a list of avatar video options
+        avatar_videos = {
+            "Avatar 1": "./avatar_video/avatar1.mp4",
+            "Avatar 2": "./avatar_video/avatar2.mp4",
+            "Avatar 3": "./avatar_video/avatar3.mp4",
+            "Avatar 4": "./avatar_video/avatar4.mp4",
+            # "Avatar 5": "avatar5.mp4"
+        }
+
+        # Create two columns
+        col1, col2 = st.columns(2)
+
+        # Display the select box in the first column
+        with col1:
+            selected_avatar = st.selectbox("Select an Avatar", list(avatar_videos.keys()), index=0)
+
+        # Display the avatar video in the second column
+        with col2:
             pass
+
+
     else:
         st.write("Answer some questions to generate the script and create the video.")
 
 # Section 4: Create Report
 elif selected_section == "Report":
     st.sidebar.header("7. Create Report")
+
+    if "responses" in st.session_state and st.session_state["responses"]:
+        qna_pair = []
+        for question_index, response, text in st.session_state["responses"]:
+            temp = {"questions" : questions[question_index]["question"],
+                        "answer" : response,
+                        "extra_inputs" : text }
+            qna_pair.append(temp)
+
+        json_string = json.dumps(qna_pair)
 
     if st.session_state["responses"]:
         if st.button("Create Report"):
@@ -255,11 +328,40 @@ elif selected_section == "Report":
             # Streamlit app
             st.title("Ikigai Scoring")
 
+            # Prompt for Report Score
+            qna = json_string
+            prompt = """
+Below are the qna collected from user for his daily activity. 
+
+QnA:
+
+%s
+
+---------------------------------------------------------------
+
+Want results in below json form. just need overall score not for each individual question. And share only json form result nothing else in result. All score is out of 10.
+ 
+
+{
+'Passion' : <passion score>,
+'Mission' : <mission score>,
+'Profession' : <profession score>,
+'Vocation': <vocation score>
+}
+
+
+""" %(qna)
+
+            # Genai Result
+            report_result = genai_result(prompt)
+            prompt = f""" Please give only json result only from below text \n\n {report_result}"""
+            report_result = json.loads(genai_result(prompt))
+
             # Get user inputs
-            passion = st.slider("Passion", 0, 10, 7)
-            mission = st.slider("Mission", 0, 10, 4)
-            profession = st.slider("Profession", 0, 10, 6)
-            vocation = st.slider("Vocation", 0, 10, 8)
+            passion = st.slider("Passion", 0, 10, int(report_result["Passion"]))
+            mission = st.slider("Mission", 0, 10, int(report_result["Mission"]))
+            profession = st.slider("Profession", 0, 10, int(report_result["Profession"]))
+            vocation = st.slider("Vocation", 0, 10, int(report_result["Vocation"]))
 
             # Calculate Ikigai score
             ikigai_score = calculate_ikigai_score(passion, mission, profession, vocation)
@@ -268,30 +370,41 @@ elif selected_section == "Report":
             display_ikigai_score(ikigai_score)
 
             with st.expander("Actionable Steps for Tomorrow:"):
-                st.write('''
-1. Morning Routine:
+                qna = json_string
+                tomorrow_prompt = f"""
+Below are the qna collected from user for his daily activity. 
 
-    * Continue with meditation and perhaps add a short exercise session.
+QnA:
 
-2. Work:
+{qna}
 
-    * Set clear goals for the day and prioritize tasks to improve productivity.
-    * Schedule short breaks to prevent burnout and maintain focus.
+---------------------------------------------
 
-3. Breaks:
 
-    * During lunch, try to engage in a relaxing activity, like listening to music or reading a book you enjoy.
+Please I am trying to achieve ikigai, so please help provide a way what can I do better tomorrow from my today's routine. Instead of giving generlize answer give some specific & personalize answer. I need few points 4-5 catagories, : 
 
-4. After Work:
+Give me only results in some catagories without adding any extra text.
 
-    * Spend quality time with family and engage in meaningful conversations.
-    * Reflect on your day and plan for tomorrow to stay organized and motivated.
+output formate:
 
-5. Personal Growth:
 
-    * Allocate time for a new hobby or learning activity that aligns with your passion and profession.
+1. catagory1:
+  - <suggestion>
+  - <suggestion>
+  .
+  .
 
-    ''')
+2. catagory2:
+.
+.
+.
+.
+.
+
+
+"""
+                actionable_steps_for_tomorrow = genai_result(tomorrow_prompt)
+                st.write(actionable_steps_for_tomorrow)
 
 
     else:

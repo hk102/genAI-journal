@@ -311,22 +311,23 @@ elif selected_section == "Script generation":
     st.sidebar.header("4. Script generation from previously answered questions")
 
     if st.button(st.session_state.script_button_label):
+        with st.spinner("Generating script, please wait..."):
 
-        if "responses" in st.session_state and st.session_state["responses"]:
-            qna_pair = []
-            for question_index, response, text in st.session_state["responses"]:
-                temp = {"questions" : questions[question_index]["question"],
-                            "answer" : response,
-                            "extra_inputs" : text }
-                qna_pair.append(temp)
-            
-            
-            st.session_state.generated_script = generate_script(qna_pair)
-            # st.write(st.session_state.generated_script)
-            st.session_state.script_button_label = "Re-generate Script"
-            
-        else:
-            st.write("Answer some questions to generate the script.")
+            if "responses" in st.session_state and st.session_state["responses"]:
+                qna_pair = []
+                for question_index, response, text in st.session_state["responses"]:
+                    temp = {"questions" : questions[question_index]["question"],
+                                "answer" : response,
+                                "extra_inputs" : text }
+                    qna_pair.append(temp)
+                
+                
+                st.session_state.generated_script = generate_script(qna_pair)
+                # st.write(st.session_state.generated_script)
+                st.session_state.script_button_label = "Re-generate Script"
+                
+            else:
+                st.write("Answer some questions to generate the script.")
 
     if st.session_state.generated_script:
         st.subheader("Generated Script:")
@@ -342,12 +343,13 @@ elif selected_section == "Convert Script to Audio":
 
     if st.session_state["responses"] and st.session_state.generated_script :
         if st.button("Convert Script to Audio"):
-            audio_content = text_to_audio(st.session_state.generated_script)
-            st.audio("day1.mp3")
-            st.session_state["audio_file"] = audio_content
-            if st.button("Go to Create Video"):
-                    st.session_state["selected_section"] = "Create Video"
-                    st.experimental_rerun()
+            with st.spinner("Generating Audio, please wait..."):
+                audio_content = text_to_audio(st.session_state.generated_script)
+                st.audio("day1.mp3")
+                st.session_state["audio_file"] = audio_content
+                if st.button("Go to Create Video"):
+                        st.session_state["selected_section"] = "Create Video"
+                        st.experimental_rerun()
     else:
         st.write("Answer some questions to generate the script and convert it to audio.")
 
@@ -413,92 +415,93 @@ elif selected_section == "Report":
                 create_report_button = st.button("Create Report", disabled=st.session_state["report_generated"])
                 if create_report_button:
                     # Your logic to generate the report
-                    qna = json_string
-                    prompt = """
+                    with st.spinner("Generating report for your ikigai, please wait..."):
+                        qna = json_string
+                        prompt = """
+            Below are the qna collected from user for his daily activity. 
+
+            QnA:
+
+            %s
+
+            ---------------------------------------------------------------
+
+            Want results in below json form. just need overall score not for each individual question. And share only json form result nothing else in result. All score is out of 10.
+            
+
+            {
+            'Passion' : <passion score>,
+            'Mission' : <mission score>,
+            'Profession' : <profession score>,
+            'Vocation': <vocation score>
+            }
+
+
+            """ %(qna)
+
+                        # Genai Result
+                        report_result = genai_result(prompt)
+                        prompt = f""" Please give only json result only from below text \n\n {report_result}"""
+                        report_result = json.loads(genai_result(prompt))
+
+                        # Get user inputs
+                        passion = int(report_result["Passion"])
+                        mission = int(report_result["Mission"])
+                        profession = int(report_result["Profession"])
+                        vocation = int(report_result["Vocation"])
+
+                        # Calculate Ikigai score
+                        ikigai_score = calculate_ikigai_score(passion, mission, profession, vocation)
+
+                        # After generating the report, store the data in st.session_state
+                        st.session_state["report_data"] = {
+                            "ikigai_score": ikigai_score,
+                            "passion": passion,
+                            "mission": mission,
+                            "profession": profession,
+                            "vocation": vocation,
+                        }
+
+                        qna = json_string
+                        tomorrow_prompt = f"""
         Below are the qna collected from user for his daily activity. 
 
         QnA:
 
-        %s
+        {qna}
 
-        ---------------------------------------------------------------
-
-        Want results in below json form. just need overall score not for each individual question. And share only json form result nothing else in result. All score is out of 10.
-        
-
-        {
-        'Passion' : <passion score>,
-        'Mission' : <mission score>,
-        'Profession' : <profession score>,
-        'Vocation': <vocation score>
-        }
+        ---------------------------------------------
 
 
-        """ %(qna)
+        Please I am trying to achieve ikigai, so please help provide a way what can I do better tomorrow from my today's routine. Instead of giving generlize answer give some specific & personalize answer. I need few points 4-5 catagories, : 
 
-                    # Genai Result
-                    report_result = genai_result(prompt)
-                    prompt = f""" Please give only json result only from below text \n\n {report_result}"""
-                    report_result = json.loads(genai_result(prompt))
+        Give me only results in some catagories without adding any extra text.
 
-                    # Get user inputs
-                    passion = int(report_result["Passion"])
-                    mission = int(report_result["Mission"])
-                    profession = int(report_result["Profession"])
-                    vocation = int(report_result["Vocation"])
-
-                    # Calculate Ikigai score
-                    ikigai_score = calculate_ikigai_score(passion, mission, profession, vocation)
-
-                    # After generating the report, store the data in st.session_state
-                    st.session_state["report_data"] = {
-                        "ikigai_score": ikigai_score,
-                        "passion": passion,
-                        "mission": mission,
-                        "profession": profession,
-                        "vocation": vocation,
-                    }
-
-                    qna = json_string
-                    tomorrow_prompt = f"""
-    Below are the qna collected from user for his daily activity. 
-
-    QnA:
-
-    {qna}
-
-    ---------------------------------------------
+        output formate:
 
 
-    Please I am trying to achieve ikigai, so please help provide a way what can I do better tomorrow from my today's routine. Instead of giving generlize answer give some specific & personalize answer. I need few points 4-5 catagories, : 
+        1. catagory1:
+        - <suggestion>
+        - <suggestion>
+        .
+        .
 
-    Give me only results in some catagories without adding any extra text.
-
-    output formate:
-
-
-    1. catagory1:
-    - <suggestion>
-    - <suggestion>
-    .
-    .
-
-    2. catagory2:
-    .
-    .
-    .
-    .
-    .
+        2. catagory2:
+        .
+        .
+        .
+        .
+        .
 
 
-    """
-                    actionable_steps_for_tomorrow = genai_result(tomorrow_prompt)
+        """
+                        actionable_steps_for_tomorrow = genai_result(tomorrow_prompt)
 
-                    # After generating the report, store the data in st.session_state
-                    st.session_state["actionable_steps_for_tomorrow"]= actionable_steps_for_tomorrow
-                
-                    st.session_state["report_generated"] = True
-                    display_report()
+                        # After generating the report, store the data in st.session_state
+                        st.session_state["actionable_steps_for_tomorrow"]= actionable_steps_for_tomorrow
+                    
+                        st.session_state["report_generated"] = True
+                        display_report()
 
     else:
         st.write("Answer some questions to generate the script and create the video.")

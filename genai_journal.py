@@ -312,7 +312,7 @@ elif selected_section == "Script generation":
     st.sidebar.header("4. Script generation from previously answered questions")
 
     if st.button(st.session_state.script_button_label):
-        with st.spinner("Generating script, please wait..."):
+        with st.spinner("Generating script..."):
 
             if "responses" in st.session_state and st.session_state["responses"]:
                 qna_pair = []
@@ -344,7 +344,7 @@ elif selected_section == "Convert Script to Audio":
 
     if st.session_state["responses"] and st.session_state.generated_script :
         if st.button("Convert Script to Audio"):
-            with st.spinner("Generating Audio, please wait..."):
+            with st.spinner("Generating Audio..."):
                 audio_content = text_to_audio(st.session_state.generated_script)
                 st.audio("day1.mp3")
                 st.session_state["audio_file"] = audio_content
@@ -416,7 +416,7 @@ elif selected_section == "Report":
                 create_report_button = st.button("Create Report", disabled=st.session_state["report_generated"])
                 if create_report_button:
                     # Your logic to generate the report
-                    with st.spinner("Generating report for your ikigai, please wait..."):
+                    with st.spinner("Generating report for your ikigai..."):
                         qna = json_string
                         prompt = """
             Below are the qna collected from user for his daily activity. 

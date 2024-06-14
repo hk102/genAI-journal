@@ -17,6 +17,7 @@ from openai import OpenAI, AzureOpenAI
 # )
 
 
+
 client = OpenAI(api_key = st.secrets["OPEANAI_KEY"])
 
 with open("qna_bank.json","r") as file:
@@ -161,6 +162,11 @@ def display_report():
         with st.expander("Actionable Steps for Tomorrow:"):
             st.write(actionable_steps_for_tomorrow)
 
+# Function to navigate to a different section
+def navigate_to_section(section):
+    st.session_state["selected_section"] = section
+    st.experimental_rerun()
+
 
 # Initialize session state
 if "responses" not in st.session_state:
@@ -171,8 +177,6 @@ if "current_question" not in st.session_state:
 # Left Panel with sections
 st.sidebar.title("GenAI Journal")
 
-# Section selection
-selected_section = st.sidebar.radio("Select a Section", ["Intro","Question - Answering", "Script generation", "Convert Script to Audio", "Create Video", "Report"])
 
 # Initialize the session state for the button label
 if "script_button_label" not in st.session_state:
@@ -191,6 +195,19 @@ if "report_data" not in st.session_state:
 if "actionable_steps_for_tomorrow" not in st.session_state:
     st.session_state["actionable_steps_for_tomorrow"] = ""
 
+# Initialize selected_section with the stored value if it exists, otherwise use the radio button
+if "selected_section" not in st.session_state:
+    st.session_state["selected_section"] = "Intro"
+
+# Use the stored value to set the default selection in the radio button
+selected_section = st.sidebar.radio(
+    "Select a Section", 
+    ["Intro","Question - Answering", "Script generation", "Convert Script to Audio", "Create Video", "Report"], 
+    index=["Intro","Question - Answering", "Script generation", "Convert Script to Audio", "Create Video", "Report"].index(st.session_state["selected_section"])
+)
+
+# # Update the session state with the new selection
+# st.session_state["selected_section"] = selected_section
 
 
 # Section 1: Intro
@@ -208,10 +225,9 @@ if selected_section == "Intro":
 * Option for personalized mentorship to stay motivated and achieve your goals
     """)
     if st.button("Get Started"):
-        selected_section = "Question - Answering"
-
+        navigate_to_section("Question - Answering")
+        pass
         
-    
 
 
 # Section 1: Question - Answering
@@ -275,6 +291,8 @@ elif selected_section == "Question - Answering":
             if st.button("Submit"):
                 st.session_state["current_question"] += 1
                 # st.text(json_string)
+                
+
 
     # Display current question
     if st.session_state["current_question"] < len(questions):
@@ -282,6 +300,9 @@ elif selected_section == "Question - Answering":
         display_question(current_question_index)
     else:
         st.subheader("Thank you for answering all the questions!")
+        if st.button("Go To Generate Script"):
+                    navigate_to_section("Script generation")
+                    # st.session_state["selected_section"] = "Script generation"
 
 # Section 2: Script generation from previously answered questions
 elif selected_section == "Script generation":
@@ -297,13 +318,21 @@ elif selected_section == "Script generation":
                             "extra_inputs" : text }
                 qna_pair.append(temp)
             
-            st.subheader("Generated Script:")
+            
             st.session_state.generated_script = generate_script(qna_pair)
             # st.write(st.session_state.generated_script)
             st.session_state.script_button_label = "Re-generate Script"
+            
         else:
             st.write("Answer some questions to generate the script.")
-    st.write(st.session_state.generated_script)
+
+    if st.session_state.generated_script:
+        st.subheader("Generated Script:")
+        st.write(st.session_state.generated_script)
+        if st.button("Go to Convert Script to Audio"):
+            navigate_to_section("Convert Script to Audio")
+            # st.session_state["selected_section"] = "Convert Script to Audio"
+                    
 
 # Section 3: Convert Script to Audio
 elif selected_section == "Convert Script to Audio":
@@ -313,8 +342,20 @@ elif selected_section == "Convert Script to Audio":
         if st.button("Convert Script to Audio"):
             audio_content = text_to_audio(st.session_state.generated_script)
             st.audio("day1.mp3")
+            st.session_state["audio_file"] = audio_content
+            if st.button("Go to Create Video"):
+                    st.session_state["selected_section"] = "Create Video"
+                    st.experimental_rerun()
     else:
         st.write("Answer some questions to generate the script and convert it to audio.")
+
+    if st.session_state.get("audio_file"):
+            if st.button("Go to Create Video"):
+                # Update the selected section and force rerun
+                # st.session_state["selected_section"] = "Create Video"
+                navigate_to_section("Create Video")
+                
+                
 
 # Section 4: Create Video from Audio & lip sync api
 elif selected_section == "Create Video":

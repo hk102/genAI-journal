@@ -223,6 +223,7 @@ if selected_section == "Intro":
 * Gain valuable insights into your productivity levels and track your progress over time
 * Discover tools and guidance to help you unlock your ikigai (life's purpose)
 * Option for personalized mentorship to stay motivated and achieve your goals
+* #75dayshardchallange video can be made with few clicks. 
     """)
     if st.button("Get Started"):
         navigate_to_section("Question - Answering")
